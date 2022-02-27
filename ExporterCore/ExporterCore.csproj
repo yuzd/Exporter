@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
+    <PackageReference Include="DotNetCore.Natasha.CSharp.All" Version="3.6.0" />
+    <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
+    <PackageReference Include="Xamasoft.JsonClassGenerator" Version="1.1.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Templates.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Templates.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Templates.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
