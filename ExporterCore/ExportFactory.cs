@@ -333,6 +333,7 @@ namespace ExporterCore
             };
 
             gen.GenerateClasses();
+            gen.OutputStream.Flush();
             return Encoding.ASCII.GetString(ms.ToArray());
         }
 
