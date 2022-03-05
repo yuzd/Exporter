@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ExportImplementation
+namespace ExporterCore
 {
     public class ModelTemplate<T>
     {

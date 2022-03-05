@@ -1,4 +1,4 @@
-﻿namespace ExportImplementation
+﻿namespace ExporterCore
 {
     public enum ExportToFormat
     {        
@@ -17,10 +17,10 @@
         /// <summary>
         /// word 2007
         /// </summary>
-        Word2007,
+        Word,
         /// <summary>
         /// excel 2007
         /// </summary>
-        Excel2007
+        Excel
     }
 }

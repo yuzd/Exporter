@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics;
-using ExportImplementation;
+using ExporterCore;
 
 //var arrCSV = new List<string>();
 //arrCSV.Add("Name,WebSite,连接");
-//arrCSV.Add("111,http://msprogrammer.serviciipeweb.ro/,http://serviciipeweb.ro/iafblog/content/binary/cv.doc");
-//arrCSV.Add("123,http://msprogrammer.serviciipeweb.ro/,http://serviciipeweb.ro/iafblog/content/binary/cv.doc");
+//arrCSV.Add("1112,http://msprogrammer.serviciipeweb.ro/,http://serviciipeweb.ro/iafblog/content/binary/cv.doc");
+//arrCSV.Add("1232,http://msprogrammer.serviciipeweb.ro/,http://serviciipeweb.ro/iafblog/content/binary/cv.doc");
 
-//var data = ExportFactory.ExportDataCsv(arrCSV.ToArray(), ExportToFormat.Excel2007);
-//File.WriteAllBytes("a.xlsx", data);
-
+//var data = ExportFactory.ExportDataCsv(arrCSV.ToArray(), ExportToFormat.Excel2003XML);
+//File.WriteAllBytes("a.xls", data);
+//data = ExportFactory.ExportDataCsv(arrCSV.ToArray(), ExportToFormat.Excel2003XML);
 
 //string json = @"[
 //        { 'Name':'Andrei Ignat', 
@@ -28,17 +28,17 @@ List<Person> listWithPerson = new List<Person>
 {
     new Person
     {
-        Name = "aa",
+        Name = "aa1",
         Aget = 12
     },
     new Person
     {
-        Name = "dasda",
+        Name = "dasda1",
         Aget = 1222
     }
 };
-var data = ExportFactory.ExportData(listWithPerson, ExportToFormat.Excel2007);
-File.WriteAllBytes("a.xlsx", data);
+var data = ExportFactory.ExportData(listWithPerson, ExportToFormat.Excel);
+File.WriteAllBytes("a.docx", data);
 
 
 public class Person

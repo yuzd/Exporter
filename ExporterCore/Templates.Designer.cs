@@ -61,6 +61,34 @@ namespace ExporterCore {
         }
         
         /// <summary>
+        ///   查找类似 using System;
+        ///public class @Model.ClassName {
+        /////constructor
+        ///public @Model.ClassName (
+        ///    @foreach(var prop in Model.Properties){
+        ///    &lt;text&gt;string @prop , &lt;/text&gt;
+        ///    }
+        ///    //add a fake property
+        ///string fake=null)
+        ///{
+        ///    @foreach(var prop in Model.Properties){
+        ///    &lt;text&gt;this.@prop = @prop;&lt;/text&gt;
+        ///    }
+        ///}//end constructor
+        /////properties
+        ///@foreach(var prop in Model.Properties){
+        ///    &lt;text&gt;public string @prop{get;set;}&lt;/text&gt;
+        ///    }
+        /// 
+        ///}//end class 的本地化字符串。
+        /// </summary>
+        public static string ClassTemplate {
+            get {
+                return ResourceManager.GetString("ClassTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;?mso-application progid=&quot;Excel.Sheet&quot;?&gt;
         ///&lt;Workbook xmlns=&quot;urn:schemas-microsoft-com:office:spreadsheet&quot;
@@ -201,8 +229,6 @@ namespace ExporterCore {
         ///} 
         ///
         /// &lt;/Table&gt;
-        ///                
-        ///         Generated on @ViewBag.DateCreated
         ///    &lt;/body&gt;
         ///&lt;/html&gt; 的本地化字符串。
         /// </summary>

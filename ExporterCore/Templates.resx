@@ -153,7 +153,32 @@ xmlns:html="http://www.w3.org/TR/REC-html40"&gt;
   &lt;Font x:Family="Swiss" ss:Bold="1"/&gt;
  &lt;/Style&gt;
 &lt;/Styles&gt;
-@Include(Model.NameOfT+"Excel2003Sheet")
+&lt;Worksheet ss:Name="Sheet1"&gt;
+ &lt;Table  x:FullColumns="1"
+  x:FullRows="1"&gt;
+@Include(Model.NameOfT+"Excel2003Header")
+@foreach(var item in Model.Data){
+  @Include(Model.NameOfT+"Excel2003Item",item)
+} 
+ &lt;/Table&gt;
+ &lt;WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel"&gt;
+  &lt;Print&gt;
+   &lt;ValidPrinterInfo/&gt;
+   &lt;PaperSizeIndex&gt;9&lt;/PaperSizeIndex&gt;
+   &lt;HorizontalResolution&gt;600&lt;/HorizontalResolution&gt;
+   &lt;VerticalResolution&gt;600&lt;/VerticalResolution&gt;
+  &lt;/Print&gt;
+  &lt;Selected/&gt;
+  &lt;Panes&gt;
+   &lt;Pane&gt;
+    &lt;Number&gt;3&lt;/Number&gt;
+    &lt;RangeSelection&gt;R1C1:R1C1&lt;/RangeSelection&gt;
+   &lt;/Pane&gt;
+  &lt;/Panes&gt;
+  &lt;ProtectObjects&gt;False&lt;/ProtectObjects&gt;
+  &lt;ProtectScenarios&gt;False&lt;/ProtectScenarios&gt;
+ &lt;/WorksheetOptions&gt;
+&lt;/Worksheet&gt;
 &lt;/Workbook&gt;</value>
   </data>
   <data name="Excel2003Header" xml:space="preserve">
@@ -222,8 +247,6 @@ xmlns:html="http://www.w3.org/TR/REC-html40"&gt;
 } 
 
  &lt;/Table&gt;
-                
-         Generated on @ViewBag.DateCreated
     &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
@@ -478,5 +501,27 @@ xmlns:html="http://www.w3.org/TR/REC-html40"&gt;
 &lt;/table:table-cell&gt;                    
    }
 &lt;/table:table-row&gt;</value>
+  </data>
+  <data name="ClassTemplate" xml:space="preserve">
+    <value>using System;
+public class @Model.ClassName {
+//constructor
+public @Model.ClassName (
+    @foreach(var prop in Model.Properties){
+    &lt;text&gt;string @prop , &lt;/text&gt;
+    }
+    //add a fake property
+string fake=null)
+{
+    @foreach(var prop in Model.Properties){
+    &lt;text&gt;this.@prop = @prop;&lt;/text&gt;
+    }
+}//end constructor
+//properties
+@foreach(var prop in Model.Properties){
+    &lt;text&gt;public string @prop{get;set;}&lt;/text&gt;
+    }
+ 
+}//end class</value>
   </data>
 </root>

@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
-namespace ExporterObjects
+namespace ExporterCore
 {
     public abstract class Export<T>
     {
         protected PropertyInfo[] properties;
         protected Type TType;
-        public Export()
+
+        protected Export()
         {
             TType= typeof (T);
             properties = TType.GetProperties();

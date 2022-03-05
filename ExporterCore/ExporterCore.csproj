@@ -5,12 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>zdyu</Authors>
+    <Version>1.0.1</Version>
+    <Description>将csv/jsonarray/dic/datatable/dataset/datareader等生成excel/word/html</Description>
+    <PackageProjectUrl>https://github.com/yuzd/Exporter</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
     <PackageReference Include="DotNetCore.Natasha.CSharp.All" Version="3.6.0" />
-    <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
+    <PackageReference Include="RazorEngineCore" Version="2020.9.1" />
     <PackageReference Include="Xamasoft.JsonClassGenerator" Version="1.1.18" />
   </ItemGroup>
 

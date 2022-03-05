@@ -1,38 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RazorEngine.Templating;
+﻿using RazorEngineCore;
 
-namespace ExportImplementation
+namespace ExporterCore
 {
-    static class RazorENgineUtils
+    public class IncludeTemplateBase : RazorEngineTemplateBase
     {
-        /// <summary>
-        /// adds CreatedDate if not exists
-        /// </summary>
-        /// <param name="additionalData"></param>
-        public static DynamicViewBag ToDynamicViewBag(this KeyValuePair<string, object>[] additionalData)
+        public Func<string, object?, string> IncludeCallback { get; set; }
+        public Func<string> RenderBodyCallback { get; set; }
+        public string Layout { get; set; }
+
+        public string Include(string key, object? model = null)
         {
-            var dict = new Dictionary<string, object> {{ "DateCreated", DateTime.Now}};
-            if (additionalData != null && additionalData.Length > 0)
+            return this.IncludeCallback(key, model);
+        }
+
+        public string RenderBody()
+        {
+            return this.RenderBodyCallback();
+        }
+    }
+
+
+
+    public class IncludeCompiledTemplate
+    {
+        private readonly IRazorEngineCompiledTemplate<IncludeTemplateBase> compiledTemplate;
+        private readonly Dictionary<string, IRazorEngineCompiledTemplate<IncludeTemplateBase>> compiledParts;
+
+        public IncludeCompiledTemplate(IRazorEngineCompiledTemplate<IncludeTemplateBase> compiledTemplate, Dictionary<string, IRazorEngineCompiledTemplate<IncludeTemplateBase>> compiledParts)
+        {
+            this.compiledTemplate = compiledTemplate;
+            this.compiledParts = compiledParts;
+        }
+
+        public string Run(object model)
+        {
+            return this.Run(this.compiledTemplate, model);
+        }
+
+        public string Run(IRazorEngineCompiledTemplate<IncludeTemplateBase> template, object model)
+        {
+            IncludeTemplateBase? templateReference = null;
+
+            string result = template.Run(instance =>
             {
-                foreach (var item in additionalData)
+                if (!(model is AnonymousTypeWrapper))
                 {
-                    if (dict.ContainsKey(item.Key))
-                    {
-                        dict[item.Key] = item.Value;
-                    }
-                    else
-                    {
-                        dict.Add(item.Key, item.Value);
-                    }
+                    model = new AnonymousTypeWrapper(model);
                 }
 
+                instance.Model = model;
+                instance.IncludeCallback = (key, includeModel) => this.Run(this.compiledParts[key], includeModel!);
+
+                templateReference = instance;
+            });
+
+            if (templateReference?.Layout == null)
+            {
+                return result;
             }
-            var viewBag = new DynamicViewBag(dict);
-            return viewBag;
+
+            return this.compiledParts[templateReference.Layout].Run(instance =>
+            {
+                if (!(model is AnonymousTypeWrapper))
+                {
+                    model = new AnonymousTypeWrapper(model);
+                }
+
+                instance.Model = model;
+                instance.IncludeCallback = (key, includeModel) => this.Run(this.compiledParts[key], includeModel!);
+                instance.RenderBodyCallback = () => result;
+            });
         }
+       
     }
 }
