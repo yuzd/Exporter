@@ -199,6 +199,39 @@ namespace ExporterCore
             }
             return ExportDataWithType((list as IEnumerable)!, exportFormat, type, additionalData);
         }
+        public static byte[]? ExportDataCsv(IEnumerable<string[]> csvWithHeader, ExportToFormat exportFormat,
+            params KeyValuePair<string, object>[] additionalData)
+        {
+            var stringsEnumerable = csvWithHeader as string[][] ?? csvWithHeader.ToArray();
+            var props = stringsEnumerable[0];
+            if (props.Contains(""))
+                throw new ArgumentException("header contains empty string");
+
+            var type = GenerateTypeFromProperties(props);
+            var assembly = type.Assembly;
+            var listType = typeof(List<>).MakeGenericType(type);
+
+            dynamic list = Activator.CreateInstance(listType)!;
+            for (int i = 1; i < stringsEnumerable.Length; i++)
+            {
+                var item = stringsEnumerable[i];
+                if(props.Length!=item.Length)continue;
+                
+                var propsValue = item.ToList();
+                propsValue.Add("fake");
+                dynamic? obj = assembly.CreateInstance(type.FullName!,
+                    true,
+                    BindingFlags.Public | BindingFlags.Instance,
+                    null,
+                    // ReSharper disable once CoVariantArrayConversion
+                    propsValue.ToArray(),
+                    null,
+                    null);
+                list.Add(obj);
+
+            }
+            return ExportDataWithType((list as IEnumerable)!, exportFormat, type, additionalData);
+        }
 
         /// <summary>
         /// 将DataTable导出
