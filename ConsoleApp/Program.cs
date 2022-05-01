@@ -3,10 +3,11 @@ using System.Text;
 using ExporterCore;
 
 var commandLineArgs = Environment.GetCommandLineArgs();
-
+#if DEBUG
+commandLineArgs = new[] {"", @"C:\Users\Administrator\Downloads\30594988.csv" };
+#endif
 if (commandLineArgs.Length < 2)
 {
-
     Console.WriteLine(@"input file path invaild");
     return ;
 }

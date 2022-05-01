@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Data;
 using System.Reflection;
+using System.Reflection.Emit;
+using LamarCompiler;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorEngineCore;
@@ -21,7 +23,6 @@ namespace ExporterCore
 
         static ExportFactory()
         {
-            NatashaInitializer.InitializeAndPreheating().ConfigureAwait(false).GetAwaiter().GetResult();
             IRazorEngine razorEngine = new RazorEngineCore.RazorEngine();
             PropertyClassTemplateCompiled = razorEngine.Compile(Templates.ClassTemplate);
         }
@@ -419,14 +420,9 @@ namespace ExporterCore
             };
 
             var code = PropertyClassTemplateCompiled.Run(mrj);
-
-            AssemblyCSharpBuilder builder = new("ExportCoreClass")
-            {
-                Domain = DomainManagement.Default
-            };
-            builder.Add(code);
-            var asm = builder.GetAssembly();
-            var type = asm.DefinedTypes.First(t => t.Name == mrj.ClassName);
+            var generator = new AssemblyGenerator();
+            var assembly = generator.Generate(code);
+            var type = assembly.GetExportedTypes().Single();
             return type;
         }
 
@@ -448,13 +444,9 @@ namespace ExporterCore
 
 
             var code = GenerateClassFromJsonArray(json);
-            AssemblyCSharpBuilder builder = new("ExportCoreClass")
-            {
-                Domain = DomainManagement.Default
-            };
-            builder.Add(code);
-            var asm = builder.GetAssembly();
-            var type = asm.DefinedTypes.First(t => t.Name == className);
+            var generator = new AssemblyGenerator();
+            var assembly = generator.Generate(code);
+            var type = assembly.GetExportedTypes().Single();
             return type;
         }
 
