@@ -21,6 +21,10 @@
         /// <summary>
         /// excel 2007
         /// </summary>
-        Excel
+        Excel,
+        /// <summary>
+        /// json
+        /// </summary>
+        JSON
     }
 }

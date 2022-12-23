@@ -85,3 +85,4 @@ artifacts/
 # Node Modules
 node_modules
 _ReSharper.Caches/
+.idea/

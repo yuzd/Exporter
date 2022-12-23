@@ -58,6 +58,9 @@ namespace ExporterCore
                 case ExportToFormat.Excel:
                     exportType = typeof(ExportExcel<>).MakeGenericType(type);
                     break;
+                case ExportToFormat.JSON:
+                    exportType = typeof(ExportJson<>).MakeGenericType(type);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(exportFormat), exportFormat, null);
             }
